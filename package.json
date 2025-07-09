@@ -1,26 +1,47 @@
 {
-  "name": "temp-next",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "react": "^18",
-    "react-dom": "^18",
-    "next": "14.2.30"
-  },
-  "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.30"
-  }
+    "name": "steam-hardware-analyzer",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint",
+        "lint:fix": "next lint --fix",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "type-check": "tsc --noEmit",
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "test:coverage": "jest --coverage",
+        "test:unit": "jest --testPathPattern=__tests__/unit",
+        "test:integration": "jest --testPathPattern=__tests__/integration",
+        "test:e2e": "playwright test"
+    },
+    "dependencies": {
+        "@tanstack/react-query": "^5.82.0",
+        "@testing-library/dom": "^10.4.0",
+        "d3": "^7.9.0",
+        "next": "14.2.30",
+        "react": "^18",
+        "react-dom": "^18",
+        "react-is": "^19.1.0",
+        "recharts": "^3.1.0"
+    },
+    "devDependencies": {
+        "@playwright/test": "^1.53.2",
+        "@testing-library/jest-dom": "^6.6.3",
+        "@testing-library/react": "^16.3.0",
+        "@types/d3": "^7.4.3",
+        "@types/node": "^20",
+        "@types/react": "^18",
+        "@types/react-dom": "^18",
+        "eslint": "^8",
+        "eslint-config-next": "14.2.30",
+        "jest": "^30.0.4",
+        "postcss": "^8",
+        "prettier": "^3.6.2",
+        "tailwindcss": "^3.4.1",
+        "typescript": "^5"
+    }
 }

@@ -1,3 +1,21 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+    "extends": ["next/core-web-vitals", "next/typescript"],
+    "rules": {
+        "eqeqeq": "error",
+        "no-eval": "error",
+        "no-extend-native": "error",
+        "no-return-assign": "error",
+        "radix": "error",
+        "no-await-in-loop": "warn",
+        "no-console": "warn",
+        "no-unneeded-ternary": "error",
+        "no-shadow": "error",
+        "prefer-const": "error",
+        "import/first": "error",
+        "import/no-webpack-loader-syntax": "error",
+        "import/no-cycle": "error",
+        "react/jsx-key": "error",
+        "react/no-array-index-key": "warn",
+        "react/void-dom-elements-no-children": "error"
+    }
 }
