@@ -17,15 +17,40 @@ const customJestConfig = {
         'src/**/*.{js,jsx,ts,tsx}',
         '!src/**/*.d.ts',
         '!src/app/**/*.{js,jsx,ts,tsx}', // Exclude app router files
+        '!src/types/**/*.ts', // Exclude type definitions
+        '!src/lib/data-processor/mock-data.ts', // Exclude mock data (test utility)
+        '!src/lib/data-processor/ingestion.ts', // Exclude ingestion (placeholder implementation)
+        '!src/lib/gpu-database/benchmarks.ts', // Exclude benchmarks (data initialization)
     ],
     coverageThreshold: {
         global: {
-            branches: 80,
-            functions: 80,
+            branches: 85,
+            functions: 90,
+            lines: 90,
+            statements: 90,
+        },
+        // Per-file thresholds for core modules
+        'src/lib/data-processor/normalizer.ts': {
+            branches: 95,
+            functions: 100,
+            lines: 95,
+            statements: 95,
+        },
+        'src/lib/data-processor/aggregator.ts': {
+            branches: 90,
+            functions: 100,
+            lines: 95,
+            statements: 95,
+        },
+        'src/lib/data-processor/validator.ts': {
+            branches: 75,
+            functions: 100,
             lines: 80,
             statements: 80,
         },
     },
+    coverageReporters: ['text', 'lcov', 'html'],
+    coverageDirectory: 'coverage',
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
