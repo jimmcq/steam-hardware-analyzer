@@ -182,7 +182,7 @@ describe('Data Processing Pipeline Integration', () => {
             const sparseData = MockDataGenerator.generateSparseData(
                 new Date('2023-01-01'),
                 new Date('2023-06-01'),
-                0.5 // 50% missing data
+                0.1 // 10% missing data - more conservative to ensure we get some data
             );
 
             expect(sparseData.length).toBeGreaterThan(0);

@@ -4,11 +4,9 @@ import { useState, useEffect } from 'react';
 
 export default function Home() {
     const [mounted, setMounted] = useState(false);
-    const [currentDate, setCurrentDate] = useState<string>('');
 
     useEffect(() => {
         setMounted(true);
-        setCurrentDate(new Date().toLocaleDateString());
     }, []);
 
     if (!mounted) {
@@ -113,47 +111,6 @@ export default function Home() {
                     </div>
                 </div>
 
-                {/* Status Dashboard */}
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-12">
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                        System Status
-                    </h2>
-                    <div className="grid md:grid-cols-4 gap-4">
-                        <div className="text-center">
-                            <div className="text-3xl font-bold text-green-600 dark:text-green-400">
-                                98
-                            </div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400">
-                                Tests Passing
-                            </div>
-                        </div>
-                        <div className="text-center">
-                            <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
-                                20+
-                            </div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400">
-                                GPU Models
-                            </div>
-                        </div>
-                        <div className="text-center">
-                            <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">
-                                93%
-                            </div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400">
-                                Code Coverage
-                            </div>
-                        </div>
-                        <div className="text-center">
-                            <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">
-                                {currentDate}
-                            </div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400">
-                                Last Updated
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 {/* Quick Links */}
                 <div className="text-center">
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
@@ -180,7 +137,7 @@ export default function Home() {
                         </button>
                     </div>
                     <p className="text-gray-600 dark:text-gray-400 mt-4">
-                        Phase 1 (Data Foundation) Complete • UI Components Coming in Phase 2
+                        Phase 2 (Analysis Engine) Complete • Interactive UI Coming in Phase 3
                     </p>
                 </div>
             </main>
@@ -188,11 +145,32 @@ export default function Home() {
             {/* Footer */}
             <footer className="bg-gray-100 dark:bg-gray-800 py-8 mt-16">
                 <div className="container mx-auto px-4 text-center">
-                    <p className="text-gray-600 dark:text-gray-400">
-                        Built with Next.js 14, TypeScript, and Tailwind CSS
+                    <p className="text-gray-600 dark:text-gray-400 mb-2">
+                        Built with ❤️ by{' '}
+                        <span className="font-semibold text-gray-800 dark:text-gray-200">
+                            Jim McQuillan
+                        </span>
                     </p>
-                    <p className="text-gray-600 dark:text-gray-400 mt-2">
-                        Data Foundation Layer • Comprehensive Testing • CI/CD Pipeline
+                    <div className="flex justify-center space-x-6 text-sm mb-2">
+                        <a
+                            href="https://github.com/jimmcq"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                        >
+                            GitHub
+                        </a>
+                        <a
+                            href="https://linkedin.com/in/jimmcquillan/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                        >
+                            LinkedIn
+                        </a>
+                    </div>
+                    <p className="text-sm text-gray-500 dark:text-gray-500">
+                        © 2025 Jim McQuillan. Open source under MIT License.
                     </p>
                 </div>
             </footer>
