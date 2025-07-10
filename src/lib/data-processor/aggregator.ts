@@ -1,4 +1,4 @@
-import { HardwareSurveyEntry, GPUMarketShare, CPUMarketShare, TimeSeriesData } from '@/types';
+import { HardwareSurveyEntry, GPUMarketShare, TimeSeriesData } from '@/types';
 
 /**
  * Aggregates and processes normalized hardware survey data
@@ -73,7 +73,7 @@ export class DataAggregator {
 
         // Calculate moving averages
         const movingAverages = this.calculateMovingAverage(timeSeries, windowSize);
-        
+
         // Calculate overall trend
         const firstAvg = movingAverages[0];
         const lastAvg = movingAverages[movingAverages.length - 1];
@@ -104,13 +104,13 @@ export class DataAggregator {
         windowSize: number
     ): number[] {
         const averages: number[] = [];
-        
+
         for (let i = 0; i <= timeSeries.length - windowSize; i++) {
             const window = timeSeries.slice(i, i + windowSize);
             const average = window.reduce((sum, point) => sum + point.value, 0) / windowSize;
             averages.push(average);
         }
-        
+
         return averages;
     }
 
@@ -119,11 +119,11 @@ export class DataAggregator {
      */
     private static calculateStandardDeviation(values: number[]): number {
         if (values.length === 0) return 0;
-        
+
         const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
         const squaredDiffs = values.map(val => Math.pow(val - mean, 2));
         const variance = squaredDiffs.reduce((sum, diff) => sum + diff, 0) / values.length;
-        
+
         return Math.sqrt(variance);
     }
 
@@ -132,7 +132,7 @@ export class DataAggregator {
      */
     static groupByManufacturer(entries: GPUMarketShare[]): Map<string, GPUMarketShare[]> {
         const grouped = new Map<string, GPUMarketShare[]>();
-        
+
         entries.forEach(entry => {
             const manufacturer = this.extractManufacturer(entry.gpuModel);
             if (!grouped.has(manufacturer)) {
@@ -140,7 +140,7 @@ export class DataAggregator {
             }
             grouped.get(manufacturer)!.push(entry);
         });
-        
+
         return grouped;
     }
 
@@ -148,9 +148,17 @@ export class DataAggregator {
      * Extracts manufacturer from GPU model name
      */
     private static extractManufacturer(gpuModel: string): string {
-        if (gpuModel.toLowerCase().includes('nvidia') || gpuModel.toLowerCase().includes('rtx') || gpuModel.toLowerCase().includes('gtx')) {
+        if (
+            gpuModel.toLowerCase().includes('nvidia') ||
+            gpuModel.toLowerCase().includes('rtx') ||
+            gpuModel.toLowerCase().includes('gtx')
+        ) {
             return 'NVIDIA';
-        } else if (gpuModel.toLowerCase().includes('amd') || gpuModel.toLowerCase().includes('radeon') || gpuModel.toLowerCase().includes('rx')) {
+        } else if (
+            gpuModel.toLowerCase().includes('amd') ||
+            gpuModel.toLowerCase().includes('radeon') ||
+            gpuModel.toLowerCase().includes('rx')
+        ) {
             return 'AMD';
         } else if (gpuModel.toLowerCase().includes('intel')) {
             return 'Intel';
@@ -161,13 +169,8 @@ export class DataAggregator {
     /**
      * Calculates market share for top N entries
      */
-    static getTopEntries<T extends { percentage: number }>(
-        entries: T[],
-        count: number = 10
-    ): T[] {
-        return entries
-            .sort((a, b) => b.percentage - a.percentage)
-            .slice(0, count);
+    static getTopEntries<T extends { percentage: number }>(entries: T[], count: number = 10): T[] {
+        return entries.sort((a, b) => b.percentage - a.percentage).slice(0, count);
     }
 
     /**
@@ -175,13 +178,13 @@ export class DataAggregator {
      */
     static calculateManufacturerShare(entries: GPUMarketShare[]): Map<string, number> {
         const manufacturerShare = new Map<string, number>();
-        
+
         entries.forEach(entry => {
             const manufacturer = this.extractManufacturer(entry.gpuModel);
             const currentShare = manufacturerShare.get(manufacturer) || 0;
             manufacturerShare.set(manufacturer, currentShare + entry.percentage);
         });
-        
+
         return manufacturerShare;
     }
 }

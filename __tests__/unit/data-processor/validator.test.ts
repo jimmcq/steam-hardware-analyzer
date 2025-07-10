@@ -26,7 +26,7 @@ describe('DataValidator', () => {
     describe('validateSteamSurveyData', () => {
         it('should validate correct survey data', () => {
             const result = DataValidator.validateSteamSurveyData(validSurveyData);
-            
+
             expect(result.isValid).toBe(true);
             expect(result.errors).toHaveLength(0);
         });
@@ -42,7 +42,7 @@ describe('DataValidator', () => {
             };
 
             const result = DataValidator.validateSteamSurveyData(invalidData);
-            
+
             expect(result.isValid).toBe(false);
             expect(result.errors).toContain('totalParticipants must be a number');
         });
@@ -54,7 +54,7 @@ describe('DataValidator', () => {
             };
 
             const result = DataValidator.validateSteamSurveyData(invalidData);
-            
+
             expect(result.isValid).toBe(false);
             expect(result.errors).toContain('surveyDate must be a valid date string');
         });
@@ -66,7 +66,7 @@ describe('DataValidator', () => {
             };
 
             const result = DataValidator.validateSteamSurveyData(invalidData);
-            
+
             expect(result.isValid).toBe(false);
             expect(result.errors).toContain('totalParticipants must be greater than 0');
         });
@@ -81,10 +81,14 @@ describe('DataValidator', () => {
             };
 
             const result = DataValidator.validateSteamSurveyData(invalidData);
-            
+
             expect(result.isValid).toBe(false);
-            expect(result.errors).toContain('graphics.RTX 4070.percentage must be between 0 and 100');
-            expect(result.errors).toContain('graphics.RTX 3060.percentage must be between 0 and 100');
+            expect(result.errors).toContain(
+                'graphics.RTX 4070.percentage must be between 0 and 100'
+            );
+            expect(result.errors).toContain(
+                'graphics.RTX 3060.percentage must be between 0 and 100'
+            );
         });
 
         it('should warn about unusual total percentages', () => {
@@ -97,9 +101,11 @@ describe('DataValidator', () => {
             };
 
             const result = DataValidator.validateSteamSurveyData(dataWithUnusualTotal);
-            
+
             expect(result.isValid).toBe(true);
-            expect(result.warnings).toContain('graphics total percentage is 85.00%, expected ~100%');
+            expect(result.warnings).toContain(
+                'graphics total percentage is 85.00%, expected ~100%'
+            );
         });
     });
 
@@ -111,19 +117,21 @@ describe('DataValidator', () => {
                 { gpuModel: 'RTX 3060', percentage: 12.3, date: new Date('2023-06-01') },
             ],
             cpuDistribution: [
-                { cpuModel: 'Intel Core i7-12700K', percentage: 18.2, date: new Date('2023-06-01') },
+                {
+                    cpuModel: 'Intel Core i7-12700K',
+                    percentage: 18.2,
+                    date: new Date('2023-06-01'),
+                },
             ],
             resolutionData: [
                 { resolution: '1920 x 1080', percentage: 65.8, date: new Date('2023-06-01') },
             ],
-            vramDistribution: [
-                { memory: '16 GB', percentage: 45.3, date: new Date('2023-06-01') },
-            ],
+            vramDistribution: [{ memory: '16 GB', percentage: 45.3, date: new Date('2023-06-01') }],
         };
 
         it('should validate correct hardware survey entry', () => {
             const result = DataValidator.validateHardwareSurveyEntry(validEntry);
-            
+
             expect(result.isValid).toBe(true);
             expect(result.errors).toHaveLength(0);
         });
@@ -135,7 +143,7 @@ describe('DataValidator', () => {
             };
 
             const result = DataValidator.validateHardwareSurveyEntry(invalidEntry);
-            
+
             expect(result.isValid).toBe(false);
             expect(result.errors).toContain('Invalid date');
         });
@@ -147,7 +155,7 @@ describe('DataValidator', () => {
             };
 
             const result = DataValidator.validateHardwareSurveyEntry(invalidEntry);
-            
+
             expect(result.isValid).toBe(false);
             expect(result.errors).toContain('GPU distribution must be an array');
         });
@@ -156,8 +164,12 @@ describe('DataValidator', () => {
     describe('cleanGPUModelName', () => {
         it('should clean GPU model names correctly', () => {
             expect(DataValidator.cleanGPUModelName('  RTX 4070  ')).toBe('RTX 4070');
-            expect(DataValidator.cleanGPUModelName('NVIDIA GeForce RTX 4070')).toBe('NVIDIA GEFORCE RTX 4070');
-            expect(DataValidator.cleanGPUModelName('AMD Radeon RX 6700 XT')).toBe('AMD RADEON RX 6700 XT');
+            expect(DataValidator.cleanGPUModelName('NVIDIA GeForce RTX 4070')).toBe(
+                'NVIDIA GEFORCE RTX 4070'
+            );
+            expect(DataValidator.cleanGPUModelName('AMD Radeon RX 6700 XT')).toBe(
+                'AMD RADEON RX 6700 XT'
+            );
         });
 
         it('should handle invalid input', () => {
@@ -191,7 +203,7 @@ describe('DataValidator', () => {
         it('should remove outliers from data', () => {
             const data = [1, 2, 3, 4, 5, 100]; // 100 is an outlier
             const cleaned = DataValidator.removeOutliers(data, 2);
-            
+
             expect(cleaned).not.toContain(100);
             expect(cleaned).toContain(1);
             expect(cleaned).toContain(5);
@@ -200,14 +212,14 @@ describe('DataValidator', () => {
         it('should handle small datasets', () => {
             const data = [1, 2];
             const cleaned = DataValidator.removeOutliers(data, 2);
-            
+
             expect(cleaned).toEqual(data);
         });
 
         it('should handle empty arrays', () => {
             const data: number[] = [];
             const cleaned = DataValidator.removeOutliers(data, 2);
-            
+
             expect(cleaned).toEqual([]);
         });
     });
@@ -221,7 +233,7 @@ describe('DataValidator', () => {
             ];
 
             const result = DataValidator.validateTimeSeries(timeSeries);
-            
+
             expect(result.isValid).toBe(true);
             expect(result.errors).toHaveLength(0);
         });
@@ -234,9 +246,11 @@ describe('DataValidator', () => {
             ];
 
             const result = DataValidator.validateTimeSeries(timeSeries);
-            
+
             expect(result.isValid).toBe(false);
-            expect(result.errors).toContain('Time series data is not in chronological order at index 1');
+            expect(result.errors).toContain(
+                'Time series data is not in chronological order at index 1'
+            );
         });
 
         it('should warn about extreme values', () => {
@@ -247,7 +261,7 @@ describe('DataValidator', () => {
             ];
 
             const result = DataValidator.validateTimeSeries(timeSeries);
-            
+
             expect(result.isValid).toBe(true);
             // Let's skip the extreme value test and just test the structure
             expect(result.errors).toHaveLength(0);
@@ -260,7 +274,7 @@ describe('DataValidator', () => {
             ];
 
             const result = DataValidator.validateTimeSeries(timeSeries);
-            
+
             expect(result.isValid).toBe(true);
             expect(result.warnings).toContain('Detected negative value: -5');
         });
@@ -290,7 +304,7 @@ describe('DataValidator', () => {
             ];
 
             const result = DataValidator.validateDataConsistency(entries);
-            
+
             expect(result.isValid).toBe(true);
             expect(result.errors).toHaveLength(0);
         });
@@ -314,14 +328,14 @@ describe('DataValidator', () => {
             ];
 
             const result = DataValidator.validateDataConsistency(entries);
-            
+
             expect(result.isValid).toBe(false);
             expect(result.errors).toContain('Duplicate survey dates detected');
         });
 
         it('should handle empty entries array', () => {
             const result = DataValidator.validateDataConsistency([]);
-            
+
             expect(result.isValid).toBe(false);
             expect(result.errors).toContain('Survey entries must be a non-empty array');
         });

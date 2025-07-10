@@ -1,31 +1,57 @@
-import { SteamSurveyData, HardwareSurveyEntry, GPUMarketShare, CPUMarketShare, TimeSeriesData } from '@/types';
+import { SteamSurveyData, HardwareSurveyEntry, TimeSeriesData } from '@/types';
 
 /**
  * Mock data generator for testing and development
  */
 export class MockDataGenerator {
     private static readonly POPULAR_GPUS = [
-        'RTX 4090', 'RTX 4080', 'RTX 4070 Ti', 'RTX 4070', 'RTX 4060 Ti', 'RTX 4060',
-        'RTX 3080', 'RTX 3070', 'RTX 3060 Ti', 'RTX 3060',
-        'RX 7900 XTX', 'RX 7900 XT', 'RX 7800 XT', 'RX 7700 XT',
-        'RX 6800 XT', 'RX 6700 XT', 'RX 6600 XT',
-        'Intel Arc A770', 'Intel Arc A750',
+        'RTX 4090',
+        'RTX 4080',
+        'RTX 4070 Ti',
+        'RTX 4070',
+        'RTX 4060 Ti',
+        'RTX 4060',
+        'RTX 3080',
+        'RTX 3070',
+        'RTX 3060 Ti',
+        'RTX 3060',
+        'RX 7900 XTX',
+        'RX 7900 XT',
+        'RX 7800 XT',
+        'RX 7700 XT',
+        'RX 6800 XT',
+        'RX 6700 XT',
+        'RX 6600 XT',
+        'Intel Arc A770',
+        'Intel Arc A750',
     ];
 
     private static readonly POPULAR_CPUS = [
-        'Intel Core i9-13900K', 'Intel Core i7-13700K', 'Intel Core i5-13600K',
-        'Intel Core i9-12900K', 'Intel Core i7-12700K', 'Intel Core i5-12600K',
-        'AMD Ryzen 9 7950X', 'AMD Ryzen 9 7900X', 'AMD Ryzen 7 7700X', 'AMD Ryzen 5 7600X',
-        'AMD Ryzen 9 5950X', 'AMD Ryzen 9 5900X', 'AMD Ryzen 7 5800X', 'AMD Ryzen 5 5600X',
+        'Intel Core i9-13900K',
+        'Intel Core i7-13700K',
+        'Intel Core i5-13600K',
+        'Intel Core i9-12900K',
+        'Intel Core i7-12700K',
+        'Intel Core i5-12600K',
+        'AMD Ryzen 9 7950X',
+        'AMD Ryzen 9 7900X',
+        'AMD Ryzen 7 7700X',
+        'AMD Ryzen 5 7600X',
+        'AMD Ryzen 9 5950X',
+        'AMD Ryzen 9 5900X',
+        'AMD Ryzen 7 5800X',
+        'AMD Ryzen 5 5600X',
     ];
 
     private static readonly RESOLUTIONS = [
-        '1920 x 1080', '2560 x 1440', '3840 x 2160', '1680 x 1050', '1366 x 768',
+        '1920 x 1080',
+        '2560 x 1440',
+        '3840 x 2160',
+        '1680 x 1050',
+        '1366 x 768',
     ];
 
-    private static readonly MEMORY_SIZES = [
-        '8 GB', '16 GB', '32 GB', '64 GB', '4 GB', '12 GB',
-    ];
+    private static readonly MEMORY_SIZES = ['8 GB', '16 GB', '32 GB', '64 GB', '4 GB', '12 GB'];
 
     /**
      * Generate mock Steam survey data for a specific date
@@ -60,13 +86,16 @@ export class MockDataGenerator {
 
             // Create realistic distribution with diminishing returns
             const basePercentage = Math.max(0.1, 15 / Math.pow(index + 1, 0.8));
-            let percentage = Math.min(remainingPercentage, basePercentage * (0.8 + Math.random() * 0.4));
-            
+            let percentage = Math.min(
+                remainingPercentage,
+                basePercentage * (0.8 + Math.random() * 0.4)
+            );
+
             // Add some variation for newer GPUs
             if (isRecent && gpu.includes('RTX 4')) {
                 percentage *= 1.2;
             }
-            
+
             if (percentage > 0.1) {
                 distribution[gpu] = {
                     percentage: Math.round(percentage * 100) / 100,
@@ -90,7 +119,8 @@ export class MockDataGenerator {
     /**
      * Generate CPU distribution with realistic market share
      */
-    private static generateCPUDistribution(date: Date): SteamSurveyData['processors'] {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    private static generateCPUDistribution(_date: Date): SteamSurveyData['processors'] {
         const distribution: SteamSurveyData['processors'] = {};
         let remainingPercentage = 100;
 
@@ -98,8 +128,11 @@ export class MockDataGenerator {
             if (remainingPercentage <= 0) return;
 
             const basePercentage = Math.max(0.1, 12 / Math.pow(index + 1, 0.9));
-            const percentage = Math.min(remainingPercentage, basePercentage * (0.8 + Math.random() * 0.4));
-            
+            const percentage = Math.min(
+                remainingPercentage,
+                basePercentage * (0.8 + Math.random() * 0.4)
+            );
+
             if (percentage > 0.1) {
                 distribution[cpu] = {
                     percentage: Math.round(percentage * 100) / 100,
@@ -217,10 +250,10 @@ export class MockDataGenerator {
     ): TimeSeriesData[] {
         const timeSeries: TimeSeriesData[] = [];
         const currentDate = new Date(startDate);
-        
+
         // Base popularity for the GPU (0-20%)
-        let baseValue = Math.random() * 15 + 1;
-        
+        const baseValue = Math.random() * 15 + 1;
+
         // Add trend based on GPU type
         let trendDirection = 0;
         if (gpuModel.includes('RTX 4')) {
@@ -255,7 +288,7 @@ export class MockDataGenerator {
         missingProbability: number = 0.3
     ): HardwareSurveyEntry[] {
         const allEntries = this.generateMultipleSurveyEntries(startDate, endDate);
-        
+
         return allEntries.filter(() => Math.random() > missingProbability);
     }
 
@@ -268,13 +301,12 @@ export class MockDataGenerator {
         outlierProbability: number = 0.1
     ): HardwareSurveyEntry[] {
         const entries = this.generateMultipleSurveyEntries(startDate, endDate);
-        
+
         return entries.map(entry => {
             if (Math.random() < outlierProbability) {
                 // Add outlier to random GPU
-                const randomGPU = entry.gpuDistribution[
-                    Math.floor(Math.random() * entry.gpuDistribution.length)
-                ];
+                const randomGPU =
+                    entry.gpuDistribution[Math.floor(Math.random() * entry.gpuDistribution.length)];
                 if (randomGPU) {
                     randomGPU.percentage *= 3; // Create outlier
                 }
@@ -286,17 +318,19 @@ export class MockDataGenerator {
     /**
      * Generate test data for specific scenarios
      */
-    static generateTestScenario(scenario: 'growth' | 'decline' | 'stable' | 'volatile'): TimeSeriesData[] {
+    static generateTestScenario(
+        scenario: 'growth' | 'decline' | 'stable' | 'volatile'
+    ): TimeSeriesData[] {
         const data: TimeSeriesData[] = [];
         const startDate = new Date('2023-01-01');
-        let baseValue = 10;
+        const baseValue = 10;
 
         for (let i = 0; i < 12; i++) {
             const date = new Date(startDate);
             date.setMonth(date.getMonth() + i);
 
             let value = baseValue;
-            
+
             switch (scenario) {
                 case 'growth':
                     value = baseValue + i * 0.5;

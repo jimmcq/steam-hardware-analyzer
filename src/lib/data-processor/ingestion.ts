@@ -54,7 +54,9 @@ export class DataIngestion {
                 warnings,
             };
         } catch (error) {
-            errors.push(`Processing error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            errors.push(
+                `Processing error: ${error instanceof Error ? error.message : 'Unknown error'}`
+            );
             return { success: false, errors, warnings };
         }
     }
@@ -79,9 +81,14 @@ export class DataIngestion {
         let successful = 0;
         let failed = 0;
 
-        for (let i = 0; i < rawDataArray.length; i++) {
-            const result = await this.processSurveyData(rawDataArray[i]);
-            
+        // Process all entries in parallel to avoid await in loop
+        const results = await Promise.all(
+            rawDataArray.map((rawData, i) =>
+                this.processSurveyData(rawData).then(result => ({ result, index: i }))
+            )
+        );
+
+        results.forEach(({ result, index: i }) => {
             if (result.success && result.data) {
                 processedData.push(result.data);
                 successful++;
@@ -89,9 +96,9 @@ export class DataIngestion {
                 failed++;
                 allErrors.push(`Entry ${i}: ${result.errors.join(', ')}`);
             }
-            
+
             allWarnings.push(...result.warnings);
-        }
+        });
 
         // Validate consistency across all entries
         if (processedData.length > 1) {
@@ -122,13 +129,17 @@ export class DataIngestion {
             gpuDistribution: this.cleanGPUDistribution(entry.gpuDistribution),
             cpuDistribution: this.cleanCPUDistribution(entry.cpuDistribution),
             resolutionData: DataNormalizer.filterLowPercentageEntries(entry.resolutionData, 0.1),
-            vramDistribution: DataNormalizer.filterLowPercentageEntries(entry.vramDistribution, 0.1),
+            vramDistribution: DataNormalizer.filterLowPercentageEntries(
+                entry.vramDistribution,
+                0.1
+            ),
         };
     }
 
     /**
      * Clean GPU distribution data
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private static cleanGPUDistribution(gpuDistribution: any[]): any[] {
         return gpuDistribution
             .map(gpu => ({
@@ -142,6 +153,7 @@ export class DataIngestion {
     /**
      * Clean CPU distribution data
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private static cleanCPUDistribution(cpuDistribution: any[]): any[] {
         return cpuDistribution
             .map(cpu => ({
@@ -155,7 +167,8 @@ export class DataIngestion {
     /**
      * Simulate fetching data from Steam (placeholder for actual implementation)
      */
-    static async fetchFromSteam(url?: string): Promise<{
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    static async fetchFromSteam(_url?: string): Promise<{
         success: boolean;
         data?: unknown;
         error?: string;
@@ -171,7 +184,8 @@ export class DataIngestion {
     /**
      * Load data from local JSON file
      */
-    static async loadFromFile(filePath: string): Promise<{
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    static async loadFromFile(_filePath: string): Promise<{
         success: boolean;
         data?: unknown;
         error?: string;
@@ -194,7 +208,8 @@ export class DataIngestion {
     /**
      * Create a data ingestion job
      */
-    static createIngestionJob(config: {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    static createIngestionJob(_config: {
         sources: string[];
         outputPath?: string;
         validationLevel: 'strict' | 'standard' | 'lenient';
@@ -232,14 +247,14 @@ export class DataIngestion {
         errors: string[];
     } {
         const errors: string[] = [];
-        
+
         if (!source || typeof source !== 'string') {
             errors.push('Data source must be a non-empty string');
             return { isValid: false, format: 'unknown', errors };
         }
 
         let format: 'json' | 'csv' | 'xml' | 'unknown' = 'unknown';
-        
+
         if (source.toLowerCase().includes('.json') || source.includes('application/json')) {
             format = 'json';
         } else if (source.toLowerCase().includes('.csv') || source.includes('text/csv')) {

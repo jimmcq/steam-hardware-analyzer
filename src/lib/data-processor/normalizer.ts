@@ -1,4 +1,11 @@
-import { SteamSurveyData, HardwareSurveyEntry, GPUMarketShare, CPUMarketShare, ResolutionStats, MemoryStats } from '@/types';
+import {
+    SteamSurveyData,
+    HardwareSurveyEntry,
+    GPUMarketShare,
+    CPUMarketShare,
+    ResolutionStats,
+    MemoryStats,
+} from '@/types';
 
 /**
  * Normalizes raw Steam Hardware Survey data into standardized format
@@ -9,7 +16,7 @@ export class DataNormalizer {
      */
     static normalizeSurveyEntry(rawData: SteamSurveyData): HardwareSurveyEntry {
         const date = new Date(rawData.surveyDate);
-        
+
         return {
             date,
             gpuDistribution: this.normalizeGPUData(rawData.graphics, date),
@@ -107,9 +114,9 @@ export class DataNormalizer {
      */
     static validateSurveyData(data: unknown): data is SteamSurveyData {
         if (!data || typeof data !== 'object') return false;
-        
+
         const survey = data as SteamSurveyData;
-        
+
         return (
             typeof survey.surveyDate === 'string' &&
             typeof survey.totalParticipants === 'number' &&

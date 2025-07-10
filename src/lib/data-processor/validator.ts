@@ -1,4 +1,4 @@
-import { SteamSurveyData, HardwareSurveyEntry, GPUMarketShare, CPUMarketShare } from '@/types';
+import { SteamSurveyData, HardwareSurveyEntry } from '@/types';
 
 /**
  * Data validation and cleaning utilities
@@ -192,7 +192,7 @@ export class DataValidator {
         }
 
         const cleanName = this.cleanGPUModelName(modelName);
-        
+
         // Check for common GPU patterns
         const patterns = [
             /^(NVIDIA\s+)?(RTX|GTX)\s+\d{4}(\s+(Ti|Super))?$/i,

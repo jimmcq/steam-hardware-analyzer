@@ -10,7 +10,11 @@ describe('DataAggregator', () => {
                 { gpuModel: 'RTX 3060', percentage: 12.0, date: new Date('2023-01-01') },
             ],
             cpuDistribution: [
-                { cpuModel: 'Intel Core i7-12700K', percentage: 18.0, date: new Date('2023-01-01') },
+                {
+                    cpuModel: 'Intel Core i7-12700K',
+                    percentage: 18.0,
+                    date: new Date('2023-01-01'),
+                },
             ],
             resolutionData: [],
             vramDistribution: [],
@@ -23,7 +27,11 @@ describe('DataAggregator', () => {
                 { gpuModel: 'RX 7900 XT', percentage: 8.0, date: new Date('2023-02-01') },
             ],
             cpuDistribution: [
-                { cpuModel: 'Intel Core i7-12700K', percentage: 17.5, date: new Date('2023-02-01') },
+                {
+                    cpuModel: 'Intel Core i7-12700K',
+                    percentage: 17.5,
+                    date: new Date('2023-02-01'),
+                },
             ],
             resolutionData: [],
             vramDistribution: [],
@@ -125,9 +133,7 @@ describe('DataAggregator', () => {
         });
 
         it('should handle insufficient data', () => {
-            const timeSeries: TimeSeriesData[] = [
-                { date: new Date('2023-01-01'), value: 10 },
-            ];
+            const timeSeries: TimeSeriesData[] = [{ date: new Date('2023-01-01'), value: 10 }];
 
             const result = DataAggregator.calculateTrends(timeSeries, 3);
 

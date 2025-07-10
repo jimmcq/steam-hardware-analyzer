@@ -289,9 +289,7 @@ export class BenchmarkDatabase {
         resolution: '1080p' | '1440p' | '4K',
         settings: 'Low' | 'Medium' | 'High' | 'Ultra'
     ): BenchmarkResult[] {
-        return this.benchmarks.filter(
-            b => b.resolution === resolution && b.settings === settings
-        );
+        return this.benchmarks.filter(b => b.resolution === resolution && b.settings === settings);
     }
 
     /**
@@ -304,12 +302,13 @@ export class BenchmarkDatabase {
         settings: 'Low' | 'Medium' | 'High' | 'Ultra' = 'High'
     ): number | undefined {
         const benchmark = this.benchmarks.find(
-            b => b.gpuModel === gpuModel && 
-                 b.game === game && 
-                 b.resolution === resolution && 
-                 b.settings === settings
+            b =>
+                b.gpuModel === gpuModel &&
+                b.game === game &&
+                b.resolution === resolution &&
+                b.settings === settings
         );
-        
+
         return benchmark?.averageFPS;
     }
 

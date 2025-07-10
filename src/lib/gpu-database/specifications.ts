@@ -1,4 +1,4 @@
-import { GPUData, CPUData } from '@/types';
+import { GPUData } from '@/types';
 
 /**
  * GPU specifications database with performance metrics and technical details
@@ -296,15 +296,17 @@ export class GPUDatabase {
      */
     static findGPUByName(partialName: string): GPUData | undefined {
         const normalized = partialName.toLowerCase().trim();
-        
+
         // Try exact match first
         const exactMatch = this.gpuSpecs.get(partialName);
         if (exactMatch) return exactMatch;
 
         // Try fuzzy matching
         for (const [model, gpu] of this.gpuSpecs) {
-            if (model.toLowerCase().includes(normalized) || 
-                normalized.includes(model.toLowerCase())) {
+            if (
+                model.toLowerCase().includes(normalized) ||
+                normalized.includes(model.toLowerCase())
+            ) {
                 return gpu;
             }
         }
@@ -317,12 +319,12 @@ export class GPUDatabase {
      */
     static getPerformanceTierDistribution(): Map<string, number> {
         const distribution = new Map<string, number>();
-        
+
         this.gpuSpecs.forEach(gpu => {
             const count = distribution.get(gpu.tier) || 0;
             distribution.set(gpu.tier, count + 1);
         });
-        
+
         return distribution;
     }
 
@@ -331,12 +333,12 @@ export class GPUDatabase {
      */
     static getManufacturerDistribution(): Map<string, number> {
         const distribution = new Map<string, number>();
-        
+
         this.gpuSpecs.forEach(gpu => {
             const count = distribution.get(gpu.manufacturer) || 0;
             distribution.set(gpu.manufacturer, count + 1);
         });
-        
+
         return distribution;
     }
 }
