@@ -137,7 +137,7 @@ export default function Home() {
                         </button>
                     </div>
                     <p className="text-gray-600 dark:text-gray-400 mt-4">
-                        Phase 1 (Data Foundation) Complete • UI Components Coming in Phase 2
+                        Phase 2 (Analysis Engine) Complete • Interactive UI Coming in Phase 3
                     </p>
                 </div>
             </main>
