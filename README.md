@@ -1,39 +1,168 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Steam Hardware Survey Analyzer
+
+A Next.js 14 web application that analyzes Steam Hardware Survey data to identify gaming hardware trends, predict upgrade patterns, and provide insights into GPU market dynamics.
+
+## Features
+
+### 🔍 Hardware Trend Analysis
+- Historical GPU market share visualization
+- Adoption curves for new GPU generations
+- Performance tier distribution over time
+- Regional hardware preferences analysis
+
+### 🎯 GPU Bottleneck Detection
+- Match hardware profiles with game requirements
+- Calculate performance scores for popular games
+- Identify upgrade bottlenecks in gaming setups
+- Recommend optimization priorities
+
+### 📊 Market Intelligence Dashboard
+- GPU release impact on market share
+- Price-to-performance trend analysis
+- Adoption rate predictions
+- Correlation with major game releases
+
+## Tech Stack
+
+- **Framework:** Next.js 14 (App Router) with TypeScript
+- **Styling:** Tailwind CSS
+- **Data Visualization:** D3.js for custom charts, Recharts for standard components
+- **State Management:** TanStack Query for data fetching and caching
+- **Testing:** Jest, React Testing Library, Playwright for E2E
+- **Data Processing:** Native JavaScript/TypeScript (no external ML libraries)
+- **Deployment:** Vercel with ISR for data updates
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18.x or later
+- Yarn package manager
+
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/jimmcq/steam-hardware-analyzer.git
+cd steam-hardware-analyzer
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+yarn install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Run the development server:
+```bash
+yarn dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Learn More
+## Development Commands
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# Development
+yarn dev              # Start development server
+yarn build            # Build for production
+yarn start            # Start production server
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Code Quality
+yarn lint             # Run ESLint
+yarn lint:fix         # Fix ESLint issues
+yarn format           # Format code with Prettier
+yarn format:check     # Check code formatting
+yarn type-check       # Run TypeScript type checking
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Testing
+yarn test             # Run all tests
+yarn test:watch       # Run tests in watch mode
+yarn test:coverage    # Run tests with coverage
+yarn test:unit        # Run unit tests only
+yarn test:integration # Run integration tests only
+yarn test:e2e         # Run end-to-end tests
+```
 
-## Deploy on Vercel
+## Architecture
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Data Pipeline
+```
+Steam Survey Data (JSON/CSV)
+    ↓
+Data Normalization Layer
+    ↓
+Processed Data Store (JSON files)
+    ↓
+API Routes (Next.js)
+    ↓
+React Components with Real-time Analysis
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Project Structure
+```
+src/
+├── app/                 # Next.js App Router
+│   ├── api/            # API routes
+│   └── ...             # Pages and layouts
+├── components/         # React components
+│   ├── charts/         # Data visualization components
+│   ├── analysis/       # Analysis and insight components
+│   └── ui/             # Reusable UI components
+├── lib/                # Core business logic
+│   ├── data-processor/ # Data normalization and aggregation
+│   ├── gpu-database/   # GPU specifications and benchmarks
+│   └── algorithms/     # Analysis algorithms
+├── hooks/              # Custom React hooks
+├── types/              # TypeScript type definitions
+└── data/               # Static data files
+```
+
+## Key Features
+
+### Core Algorithms
+- **Clustering:** K-means implementation for grouping similar hardware configurations
+- **Trend Detection:** Moving averages, growth rates, and inflection point analysis
+- **Bottleneck Calculation:** Performance scoring and hardware limitation detection
+
+### API Endpoints
+- `/api/hardware` - Current hardware distribution data
+- `/api/trends` - Historical trends with configurable time ranges
+- `/api/analysis/bottleneck` - Performance analysis for configurations
+- `/api/analysis/upgrade-prediction` - Upgrade likelihood scoring
+
+### Data Sources
+- Steam Hardware Survey monthly reports
+- Public GPU benchmark databases
+- Game system requirements from Steam API
+
+## Testing
+
+The project maintains high test coverage with:
+- **Unit Tests:** All data transformation functions and algorithms
+- **Integration Tests:** API routes and data flow
+- **E2E Tests:** Critical user journeys and cross-browser compatibility
+
+Target: 90% test coverage on core algorithms and data processing.
+
+## Performance
+
+- Sub-2s initial page load
+- Efficient data structures for large datasets
+- Memoized calculations for performance
+- Progressive data loading for visualizations
+- ISR for monthly data updates
+
+## Contributing
+
+1. Create a feature branch from `main`
+2. Make your changes following the established code style
+3. Write tests for new functionality
+4. Run the full test suite and ensure all checks pass
+5. Submit a pull request with a clear description
+
+## License
+
+This project is licensed under the MIT License.
 
 ## Author
 
