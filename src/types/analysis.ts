@@ -61,9 +61,48 @@ export interface PerformanceInsight {
 }
 
 export interface AnalysisData {
-    trends: TrendAnalysis;
-    bottlenecks: BottleneckAnalysis[];
-    predictions: UpgradePrediction[];
-    insights: PerformanceInsight[];
-    lastUpdated: Date;
+    fastestGrowingGPU?: {
+        model: string;
+        growthRate: number;
+    };
+    decliningGPU?: {
+        model: string;
+        declineRate: number;
+    };
+    mostPopularGPU?: {
+        model: string;
+        marketShare: number;
+    };
+    commonBottleneck?: {
+        type: string;
+        percentage: number;
+    };
+    performanceLeader?: {
+        model: string;
+        score: number;
+    };
+    adoptionRate?: {
+        rate: number;
+        trend: 'up' | 'down' | 'neutral';
+        change?: number;
+    };
+    totalGPUs?: number;
+    activeManufacturers?: number;
+    marketVolatility?: number;
+    averagePerformance?: number;
+    performanceGrowth?: number;
+    vramTrend?: string;
+    trends?: TrendAnalysis;
+    bottlenecks?: BottleneckAnalysis[];
+    predictions?: UpgradePrediction[];
+    insights?: PerformanceInsight[];
+    lastUpdated?: Date;
+}
+
+export interface UpgradeRecommendation {
+    gpu: string;
+    score: number;
+    reasons: string[];
+    priceRange: string;
+    availability: 'high' | 'medium' | 'low';
 }

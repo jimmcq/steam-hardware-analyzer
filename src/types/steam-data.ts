@@ -38,14 +38,29 @@ export interface SteamSurveyData {
 }
 
 export interface GameRequirements {
-    gameId: string;
     name: string;
-    minimumGPU: string;
-    recommendedGPU: string;
-    minimumCPU: string;
-    recommendedCPU: string;
-    minimumRAM: number;
-    recommendedRAM: number;
-    minimumVRAM: number;
-    recommendedVRAM: number;
+    minimumSpecs?: {
+        gpu: { model: string; performanceScore?: number };
+        vram: number;
+        cpu: string;
+        ram: number;
+    };
+    recommendedSpecs?: {
+        gpu: { model: string; performanceScore?: number };
+        vram: number;
+        cpu: string;
+        ram: number;
+    };
+    resolution?: string;
+    targetFps?: number;
+    settings?: string;
+    gameId?: string;
+    minimumGPU?: string;
+    recommendedGPU?: string;
+    minimumCPU?: string;
+    recommendedCPU?: string;
+    minimumRAM?: number;
+    recommendedRAM?: number;
+    minimumVRAM?: number;
+    recommendedVRAM?: number;
 }

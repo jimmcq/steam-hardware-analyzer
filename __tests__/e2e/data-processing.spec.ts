@@ -1,16 +1,16 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Phase 2 Analysis Engine Integration', () => {
-    test('should display Phase 2 completion status', async ({ page }) => {
+test.describe('Phase 3 Visualization Layer Integration', () => {
+    test('should display Phase 3 completion status', async ({ page }) => {
         await page.goto('/');
         await page.waitForLoadState('networkidle');
 
-        // Verify the page indicates Phase 2 completion
-        const phaseIndicator = page.locator('text=Phase 2 (Analysis Engine) Complete');
+        // Verify the page indicates Phase 3 completion
+        const phaseIndicator = page.locator('text=Phase 3 (Visualization Layer) Complete');
         await expect(phaseIndicator).toBeVisible();
 
-        // Check that Phase 3 is coming next
-        const phaseMessage = page.locator('text=Interactive UI Coming in Phase 3');
+        // Check that interactive tools are available
+        const phaseMessage = page.locator('text=Interactive charts and analysis tools available');
         await expect(phaseMessage).toBeVisible();
     });
 
@@ -31,25 +31,27 @@ test.describe('Phase 2 Analysis Engine Integration', () => {
         const trendDescription = page.locator('text=Track GPU market share evolution');
         await expect(trendDescription).toBeVisible();
 
-        const bottleneckDescription = page.locator('text=Identify performance bottlenecks');
+        const bottleneckDescription = page.locator(
+            'text=Match hardware profiles with game requirements'
+        );
         await expect(bottleneckDescription).toBeVisible();
     });
 
-    test('should show Phase 3 UI components as coming soon', async ({ page }) => {
+    test('should show Phase 3 UI components as functional links', async ({ page }) => {
         await page.goto('/');
 
-        // Check that Phase 3 UI features are marked as coming soon (disabled)
-        const dashboardButton = page.locator('button:has-text("Hardware Analysis Dashboard")');
-        await expect(dashboardButton).toBeVisible();
-        await expect(dashboardButton).toBeDisabled();
+        // Check that Phase 3 UI features are now functional (clickable links)
+        const dashboardLink = page.locator('a:has-text("Hardware Analysis Dashboard")');
+        await expect(dashboardLink).toBeVisible();
+        await expect(dashboardLink).toHaveAttribute('href', '/dashboard');
 
-        const bottleneckButton = page.locator('button:has-text("Bottleneck Detector")');
-        await expect(bottleneckButton).toBeVisible();
-        await expect(bottleneckButton).toBeDisabled();
+        const bottleneckLink = page.locator('a:has-text("Bottleneck Detector")');
+        await expect(bottleneckLink).toBeVisible();
+        await expect(bottleneckLink).toHaveAttribute('href', '/analysis');
 
-        const trendsButton = page.locator('button:has-text("Market Trends Viewer")');
-        await expect(trendsButton).toBeVisible();
-        await expect(trendsButton).toBeDisabled();
+        const trendsLink = page.locator('a:has-text("Market Trends Viewer")');
+        await expect(trendsLink).toBeVisible();
+        await expect(trendsLink).toHaveAttribute('href', '/trends');
     });
 
     test('should have author information in footer', async ({ page }) => {
@@ -97,5 +99,53 @@ test.describe('Phase 2 Analysis Engine Integration', () => {
 
         const h2Elements = page.locator('h2');
         await expect(h2Elements.first()).toBeVisible();
+    });
+
+    test('should navigate to dashboard page', async ({ page }) => {
+        await page.goto('/');
+
+        // Click the dashboard link
+        const dashboardLink = page.locator('a:has-text("Hardware Analysis Dashboard")');
+        await dashboardLink.click();
+
+        // Wait for navigation
+        await page.waitForURL('/dashboard');
+
+        // Check that we're on the dashboard page
+        await expect(page).toHaveURL('/dashboard');
+        const dashboardTitle = page.getByRole('heading', { name: 'Hardware Analysis Dashboard' });
+        await expect(dashboardTitle).toBeVisible();
+    });
+
+    test('should navigate to analysis page', async ({ page }) => {
+        await page.goto('/');
+
+        // Click the analysis link
+        const analysisLink = page.locator('a:has-text("Bottleneck Detector")');
+        await analysisLink.click();
+
+        // Wait for navigation
+        await page.waitForURL('/analysis');
+
+        // Check that we're on the analysis page
+        await expect(page).toHaveURL('/analysis');
+        const analysisTitle = page.getByRole('heading', { name: 'Performance Analysis' });
+        await expect(analysisTitle).toBeVisible();
+    });
+
+    test('should navigate to trends page', async ({ page }) => {
+        await page.goto('/');
+
+        // Click the trends link
+        const trendsLink = page.locator('a:has-text("Market Trends Viewer")');
+        await trendsLink.click();
+
+        // Wait for navigation
+        await page.waitForURL('/trends');
+
+        // Check that we're on the trends page
+        await expect(page).toHaveURL('/trends');
+        const trendsTitle = page.getByRole('heading', { name: 'Market Trends Analysis' });
+        await expect(trendsTitle).toBeVisible();
     });
 });

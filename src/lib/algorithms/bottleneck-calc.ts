@@ -35,7 +35,7 @@ export function calculateBottleneck(
 
 function calculateGPUScore(gpu: GPUData, game: GameRequirements): number {
     const baseScore = gpu.performanceScore;
-    const vramMultiplier = calculateVRAMMultiplier(gpu.vram, game.recommendedVRAM);
+    const vramMultiplier = calculateVRAMMultiplier(gpu.vram, game.recommendedVRAM || 8);
     const architectureBonus = getArchitectureBonus(gpu.architecture);
 
     return Math.min(100, baseScore * vramMultiplier + architectureBonus);
@@ -240,11 +240,12 @@ function generateUpgradeOptions(
         });
     }
 
-    if (bottleneckType === 'Memory' || gpu.vram < game.recommendedVRAM) {
+    const recommendedVRAM = game.recommendedVRAM || 8;
+    if (bottleneckType === 'Memory' || gpu.vram < recommendedVRAM) {
         options.push({
             component: 'Memory',
-            suggestions: generateMemoryUpgrades(gpu.vram, game.recommendedVRAM),
-            expectedImprovement: calculateMemoryUpgradeImprovement(gpu.vram, game.recommendedVRAM),
+            suggestions: generateMemoryUpgrades(gpu.vram, recommendedVRAM),
+            expectedImprovement: calculateMemoryUpgradeImprovement(gpu.vram, recommendedVRAM),
         });
     }
 

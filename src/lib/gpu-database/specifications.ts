@@ -77,6 +77,51 @@ export class GPUDatabase {
             marketShare: [],
         });
 
+        // NVIDIA RTX 50 Series
+        this.addGPU({
+            model: 'RTX 5090',
+            manufacturer: 'NVIDIA',
+            tier: 'Enthusiast',
+            releaseDate: new Date('2025-01-30'),
+            performanceScore: 150,
+            vram: 32,
+            architecture: 'Blackwell',
+            marketShare: [],
+        });
+
+        this.addGPU({
+            model: 'RTX 5080',
+            manufacturer: 'NVIDIA',
+            tier: 'Enthusiast',
+            releaseDate: new Date('2025-01-30'),
+            performanceScore: 120,
+            vram: 16,
+            architecture: 'Blackwell',
+            marketShare: [],
+        });
+
+        this.addGPU({
+            model: 'RTX 5070 Ti',
+            manufacturer: 'NVIDIA',
+            tier: 'High-End',
+            releaseDate: new Date('2025-02-26'),
+            performanceScore: 95,
+            vram: 12,
+            architecture: 'Blackwell',
+            marketShare: [],
+        });
+
+        this.addGPU({
+            model: 'RTX 5070',
+            manufacturer: 'NVIDIA',
+            tier: 'High-End',
+            releaseDate: new Date('2025-02-26'),
+            performanceScore: 85,
+            vram: 8,
+            architecture: 'Blackwell',
+            marketShare: [],
+        });
+
         // NVIDIA RTX 30 Series
         this.addGPU({
             model: 'RTX 3090',
@@ -175,6 +220,29 @@ export class GPUDatabase {
             performanceScore: 58,
             vram: 12,
             architecture: 'RDNA 3',
+            marketShare: [],
+        });
+
+        // AMD RX 9000 Series
+        this.addGPU({
+            model: 'RX 9070 XT',
+            manufacturer: 'AMD',
+            tier: 'High-End',
+            releaseDate: new Date('2025-03-06'),
+            performanceScore: 92,
+            vram: 16,
+            architecture: 'RDNA 4',
+            marketShare: [],
+        });
+
+        this.addGPU({
+            model: 'RX 9070',
+            manufacturer: 'AMD',
+            tier: 'High-End',
+            releaseDate: new Date('2025-03-06'),
+            performanceScore: 82,
+            vram: 16,
+            architecture: 'RDNA 4',
             marketShare: [],
         });
 

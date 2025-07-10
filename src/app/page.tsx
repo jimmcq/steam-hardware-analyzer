@@ -114,30 +114,31 @@ export default function Home() {
                 {/* Quick Links */}
                 <div className="text-center">
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                        Coming Soon
+                        Explore the Data
                     </h2>
                     <div className="flex flex-wrap justify-center gap-4">
-                        <button
-                            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors cursor-not-allowed opacity-50"
-                            disabled
+                        <a
+                            href="/dashboard"
+                            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
                         >
                             Hardware Analysis Dashboard
-                        </button>
-                        <button
-                            className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors cursor-not-allowed opacity-50"
-                            disabled
+                        </a>
+                        <a
+                            href="/analysis"
+                            className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
                         >
                             Bottleneck Detector
-                        </button>
-                        <button
-                            className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors cursor-not-allowed opacity-50"
-                            disabled
+                        </a>
+                        <a
+                            href="/trends"
+                            className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
                         >
                             Market Trends Viewer
-                        </button>
+                        </a>
                     </div>
                     <p className="text-gray-600 dark:text-gray-400 mt-4">
-                        Phase 2 (Analysis Engine) Complete • Interactive UI Coming in Phase 3
+                        Phase 3 (Visualization Layer) Complete • Interactive charts and analysis
+                        tools available
                     </p>
                 </div>
             </main>
