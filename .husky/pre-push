@@ -1,0 +1,9 @@
+# Run integration tests before pushing
+echo "🔗 Running integration tests..."
+yarn test:integration
+
+# Run build check to ensure production readiness
+echo "🏗️ Checking build..."
+yarn build
+
+echo "✅ All pre-push checks passed!"

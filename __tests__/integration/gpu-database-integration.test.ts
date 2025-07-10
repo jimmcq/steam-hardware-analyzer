@@ -20,7 +20,7 @@ describe('GPU Database Integration Tests', () => {
 
         it('should have consistent performance tiers', () => {
             const tierDistribution = GPUDatabase.getPerformanceTierDistribution();
-            
+
             expect(tierDistribution.has('Entry')).toBe(true);
             expect(tierDistribution.has('Mid-Range')).toBe(true);
             expect(tierDistribution.has('High-End')).toBe(true);
@@ -30,8 +30,11 @@ describe('GPU Database Integration Tests', () => {
             const enthusiastGPUs = GPUDatabase.getGPUsByTier('Enthusiast');
             const entryGPUs = GPUDatabase.getGPUsByTier('Entry');
 
-            const avgEnthusiastScore = enthusiastGPUs.reduce((sum, gpu) => sum + gpu.performanceScore, 0) / enthusiastGPUs.length;
-            const avgEntryScore = entryGPUs.reduce((sum, gpu) => sum + gpu.performanceScore, 0) / entryGPUs.length;
+            const avgEnthusiastScore =
+                enthusiastGPUs.reduce((sum, gpu) => sum + gpu.performanceScore, 0) /
+                enthusiastGPUs.length;
+            const avgEntryScore =
+                entryGPUs.reduce((sum, gpu) => sum + gpu.performanceScore, 0) / entryGPUs.length;
 
             expect(avgEnthusiastScore).toBeGreaterThan(avgEntryScore);
         });
@@ -39,7 +42,7 @@ describe('GPU Database Integration Tests', () => {
         it('should have reasonable release date ranges', () => {
             const allGPUs = GPUDatabase.getAllGPUs();
             const releaseYears = allGPUs.map(gpu => gpu.releaseDate.getFullYear());
-            
+
             const minYear = Math.min(...releaseYears);
             const maxYear = Math.max(...releaseYears);
 
@@ -61,10 +64,10 @@ describe('GPU Database Integration Tests', () => {
 
             for (const [gpuModel, timeSeries] of gpuTimeSeries) {
                 const gpuSpec = GPUDatabase.findGPUByName(gpuModel);
-                
+
                 if (gpuSpec && timeSeries.length > 1) {
                     const trends = DataAggregator.calculateTrends(timeSeries);
-                    
+
                     // Higher-end GPUs might have different trend patterns
                     if (gpuSpec.tier === 'Enthusiast' || gpuSpec.tier === 'High-End') {
                         expect(typeof trends.growthRate).toBe('number');
@@ -85,10 +88,15 @@ describe('GPU Database Integration Tests', () => {
 
             // Get latest entry for current market share
             const latestEntry = mockEntries[mockEntries.length - 1];
-            const manufacturerShare = DataAggregator.calculateManufacturerShare(latestEntry.gpuDistribution);
+            const manufacturerShare = DataAggregator.calculateManufacturerShare(
+                latestEntry.gpuDistribution
+            );
 
             // Should have data for major manufacturers
-            const totalShare = Array.from(manufacturerShare.values()).reduce((sum, share) => sum + share, 0);
+            const totalShare = Array.from(manufacturerShare.values()).reduce(
+                (sum, share) => sum + share,
+                0
+            );
             expect(totalShare).toBeGreaterThan(0);
 
             // Verify manufacturer names are recognized
@@ -118,7 +126,7 @@ describe('GPU Database Integration Tests', () => {
 
         it('should handle case-insensitive searches', () => {
             const searchTerms = ['rtx 4090', 'RTX 4090', 'Rtx 4090'];
-            
+
             searchTerms.forEach(term => {
                 const found = GPUDatabase.findGPUByName(term);
                 expect(found).toBeDefined();
@@ -144,22 +152,30 @@ describe('GPU Database Integration Tests', () => {
 
             // Verify date filtering works correctly
             recentGPUs.forEach(gpu => {
-                expect(gpu.releaseDate.getTime()).toBeGreaterThanOrEqual(new Date('2022-01-01').getTime());
+                expect(gpu.releaseDate.getTime()).toBeGreaterThanOrEqual(
+                    new Date('2022-01-01').getTime()
+                );
                 expect(gpu.releaseDate.getTime()).toBeLessThan(new Date('2024-01-01').getTime());
             });
         });
 
         it('should correlate release dates with architecture generations', () => {
-            const rtx40Series = GPUDatabase.getAllGPUs()
-                .filter(gpu => gpu.architecture === 'Ada Lovelace');
-            
-            const rtx30Series = GPUDatabase.getAllGPUs()
-                .filter(gpu => gpu.architecture === 'Ampere');
+            const rtx40Series = GPUDatabase.getAllGPUs().filter(
+                gpu => gpu.architecture === 'Ada Lovelace'
+            );
+
+            const rtx30Series = GPUDatabase.getAllGPUs().filter(
+                gpu => gpu.architecture === 'Ampere'
+            );
 
             // RTX 40 series should be newer than RTX 30 series
             if (rtx40Series.length > 0 && rtx30Series.length > 0) {
-                const avgRtx40Date = rtx40Series.reduce((sum, gpu) => sum + gpu.releaseDate.getTime(), 0) / rtx40Series.length;
-                const avgRtx30Date = rtx30Series.reduce((sum, gpu) => sum + gpu.releaseDate.getTime(), 0) / rtx30Series.length;
+                const avgRtx40Date =
+                    rtx40Series.reduce((sum, gpu) => sum + gpu.releaseDate.getTime(), 0) /
+                    rtx40Series.length;
+                const avgRtx30Date =
+                    rtx30Series.reduce((sum, gpu) => sum + gpu.releaseDate.getTime(), 0) /
+                    rtx30Series.length;
 
                 expect(avgRtx40Date).toBeGreaterThan(avgRtx30Date);
             }
@@ -169,15 +185,15 @@ describe('GPU Database Integration Tests', () => {
     describe('Performance Metrics Validation', () => {
         it('should have consistent performance scores within tiers', () => {
             const tiers = ['Entry', 'Mid-Range', 'High-End', 'Enthusiast'] as const;
-            
+
             tiers.forEach(tier => {
                 const gpusInTier = GPUDatabase.getGPUsByTier(tier);
-                
+
                 if (gpusInTier.length > 1) {
                     const scores = gpusInTier.map(gpu => gpu.performanceScore);
                     const minScore = Math.min(...scores);
                     const maxScore = Math.max(...scores);
-                    
+
                     // Within a tier, scores shouldn't vary too wildly
                     const variation = (maxScore - minScore) / minScore;
                     expect(variation).toBeLessThan(1.0); // Less than 100% variation within tier
@@ -190,8 +206,10 @@ describe('GPU Database Integration Tests', () => {
             const entryGPUs = GPUDatabase.getGPUsByTier('Entry');
 
             if (enthusiastGPUs.length > 0 && entryGPUs.length > 0) {
-                const avgEnthusiastVRAM = enthusiastGPUs.reduce((sum, gpu) => sum + gpu.vram, 0) / enthusiastGPUs.length;
-                const avgEntryVRAM = entryGPUs.reduce((sum, gpu) => sum + gpu.vram, 0) / entryGPUs.length;
+                const avgEnthusiastVRAM =
+                    enthusiastGPUs.reduce((sum, gpu) => sum + gpu.vram, 0) / enthusiastGPUs.length;
+                const avgEntryVRAM =
+                    entryGPUs.reduce((sum, gpu) => sum + gpu.vram, 0) / entryGPUs.length;
 
                 expect(avgEnthusiastVRAM).toBeGreaterThan(avgEntryVRAM);
             }

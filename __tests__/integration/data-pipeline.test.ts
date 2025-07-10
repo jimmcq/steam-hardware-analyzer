@@ -44,22 +44,34 @@ describe('Data Processing Pipeline Integration', () => {
                     const surveyData = {
                         surveyDate: entry.date.toISOString().split('T')[0],
                         totalParticipants: 5000000,
-                        graphics: entry.gpuDistribution.reduce((acc, gpu) => {
-                            acc[gpu.gpuModel] = { percentage: gpu.percentage };
-                            return acc;
-                        }, {} as Record<string, { percentage: number }>),
-                        processors: entry.cpuDistribution.reduce((acc, cpu) => {
-                            acc[cpu.cpuModel] = { percentage: cpu.percentage };
-                            return acc;
-                        }, {} as Record<string, { percentage: number }>),
-                        memory: entry.vramDistribution.reduce((acc, vram) => {
-                            acc[vram.memory] = { percentage: vram.percentage };
-                            return acc;
-                        }, {} as Record<string, { percentage: number }>),
-                        resolution: entry.resolutionData.reduce((acc, res) => {
-                            acc[res.resolution] = { percentage: res.percentage };
-                            return acc;
-                        }, {} as Record<string, { percentage: number }>),
+                        graphics: entry.gpuDistribution.reduce(
+                            (acc, gpu) => {
+                                acc[gpu.gpuModel] = { percentage: gpu.percentage };
+                                return acc;
+                            },
+                            {} as Record<string, { percentage: number }>
+                        ),
+                        processors: entry.cpuDistribution.reduce(
+                            (acc, cpu) => {
+                                acc[cpu.cpuModel] = { percentage: cpu.percentage };
+                                return acc;
+                            },
+                            {} as Record<string, { percentage: number }>
+                        ),
+                        memory: entry.vramDistribution.reduce(
+                            (acc, vram) => {
+                                acc[vram.memory] = { percentage: vram.percentage };
+                                return acc;
+                            },
+                            {} as Record<string, { percentage: number }>
+                        ),
+                        resolution: entry.resolutionData.reduce(
+                            (acc, res) => {
+                                acc[res.resolution] = { percentage: res.percentage };
+                                return acc;
+                            },
+                            {} as Record<string, { percentage: number }>
+                        ),
                     };
                     return DataIngestion.processSurveyData(surveyData);
                 })
@@ -80,7 +92,7 @@ describe('Data Processing Pipeline Integration', () => {
                 expect(typeof gpuModel).toBe('string');
                 expect(Array.isArray(timeSeries)).toBe(true);
                 expect(timeSeries.length).toBeGreaterThan(0);
-                
+
                 timeSeries.forEach(dataPoint => {
                     expect(dataPoint.date).toBeInstanceOf(Date);
                     expect(typeof dataPoint.value).toBe('number');
@@ -120,7 +132,7 @@ describe('Data Processing Pipeline Integration', () => {
     describe('GPU Database Integration', () => {
         it('should match GPU models from survey data with database', () => {
             const surveyData = MockDataGenerator.generateSteamSurveyData(new Date('2023-06-01'));
-            
+
             // Convert to HardwareSurveyEntry format
             const entry = {
                 date: new Date(surveyData.surveyDate),
@@ -135,7 +147,7 @@ describe('Data Processing Pipeline Integration', () => {
             };
 
             let matchedGPUs = 0;
-            
+
             entry.gpuDistribution.forEach(gpu => {
                 const dbGPU = GPUDatabase.findGPUByName(gpu.gpuModel);
                 if (dbGPU) {
@@ -174,7 +186,7 @@ describe('Data Processing Pipeline Integration', () => {
             );
 
             expect(sparseData.length).toBeGreaterThan(0);
-            
+
             const validation = DataValidator.validateDataConsistency(sparseData);
             expect(validation.isValid).toBe(true);
         });
@@ -190,8 +202,8 @@ describe('Data Processing Pipeline Integration', () => {
 
             // Aggregate data and check for trend analysis
             const gpuTimeSeries = DataAggregator.aggregateGPUMarketShare(dataWithOutliers);
-            
-            for (const [_, timeSeries] of gpuTimeSeries) {
+
+            for (const [, timeSeries] of gpuTimeSeries) {
                 if (timeSeries.length >= 3) {
                     const trends = DataAggregator.calculateTrends(timeSeries);
                     expect(['growing', 'declining', 'stable']).toContain(trends.trend);
@@ -203,14 +215,14 @@ describe('Data Processing Pipeline Integration', () => {
 
         it('should validate time series data properly', () => {
             const testScenarios = ['growth', 'decline', 'stable', 'volatile'] as const;
-            
+
             testScenarios.forEach(scenario => {
                 const timeSeries = MockDataGenerator.generateTestScenario(scenario);
                 const validation = DataValidator.validateTimeSeries(timeSeries);
-                
+
                 expect(validation.isValid).toBe(true);
                 expect(timeSeries.length).toBe(12);
-                
+
                 // Verify chronological order
                 for (let i = 1; i < timeSeries.length; i++) {
                     expect(timeSeries[i].date.getTime()).toBeGreaterThan(
@@ -223,23 +235,23 @@ describe('Data Processing Pipeline Integration', () => {
 
     describe('Performance and Scalability', () => {
         it('should process large datasets efficiently', async () => {
-            const largeDataset = Array.from({ length: 100 }, (_, i) => 
+            const largeDataset = Array.from({ length: 100 }, (_, i) =>
                 MockDataGenerator.generateSteamSurveyData(
                     new Date(2023, 0, 1 + i) // 100 days of data
                 )
             );
 
             const startTime = Date.now();
-            
+
             const results = await DataIngestion.processMultipleSurveyEntries(largeDataset);
-            
+
             const endTime = Date.now();
             const processingTime = endTime - startTime;
 
             expect(results.success).toBe(true);
             expect(results.stats.processed).toBe(100);
             expect(results.stats.successful).toBeGreaterThan(0);
-            
+
             // Should process 100 entries in reasonable time (< 5 seconds)
             expect(processingTime).toBeLessThan(5000);
         });
