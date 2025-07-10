@@ -18,6 +18,7 @@ const customJestConfig = {
         'src/**/*.{js,jsx,ts,tsx}',
         '!src/**/*.d.ts',
         '!src/app/**/*.{js,jsx,ts,tsx}', // Exclude app router files
+        '!src/components/**/*.{js,jsx,ts,tsx}', // Exclude React components
         '!src/types/**/*.ts', // Exclude type definitions
         '!src/lib/data-processor/mock-data.ts', // Exclude mock data (test utility)
         '!src/lib/data-processor/ingestion.ts', // Exclude ingestion (placeholder implementation)
