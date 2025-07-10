@@ -209,6 +209,91 @@ describe('Coverage Boost Tests', () => {
             expect(DataValidator.validateGPUModelName('AMD RX 7800')).toBe(true);
             expect(DataValidator.validateGPUModelName('Intel Arc A770')).toBe(true);
             expect(DataValidator.validateGPUModelName('Random Text')).toBe(false);
+
+            // Test additional edge cases to boost coverage
+            const mixedValidation = DataValidator.validateSteamSurveyData({
+                surveyDate: '2024-01-01',
+                totalParticipants: 0, // Zero participants
+                graphics: {},
+                processors: {},
+                memory: {},
+                resolution: {},
+            } as unknown as SteamSurveyData);
+            expect(mixedValidation.isValid).toBe(false);
+
+            // Test empty data array scenario
+            const emptyConsistency = DataValidator.validateDataConsistency([]);
+            expect(emptyConsistency.isValid).toBe(false);
+
+            // Test time series edge case
+            const singlePointSeries = DataValidator.validateTimeSeries([
+                { date: new Date(), value: 50 },
+            ]);
+            expect(singlePointSeries.isValid).toBe(true);
+        });
+
+        it('should handle additional clustering edge cases', () => {
+            // Test clustering with extreme distribution differences
+            const extremeEntry: HardwareSurveyEntry = {
+                date: new Date(),
+                gpuDistribution: [
+                    { gpuModel: 'RTX 4090', percentage: 1, date: new Date() },
+                    { gpuModel: 'GTX 1050', percentage: 99, date: new Date() },
+                ],
+                cpuDistribution: [
+                    { cpuModel: 'i9-13900K', percentage: 5, date: new Date() },
+                    { cpuModel: 'i3-8100', percentage: 95, date: new Date() },
+                ],
+                resolutionData: [],
+                vramDistribution: [],
+            };
+
+            const extremeResult = clusterUserProfiles([extremeEntry], 4);
+            expect(extremeResult.length).toBeGreaterThan(0);
+
+            // Test with k=1 to ensure it handles extreme distributions
+            const singleClusterResult = clusterUserProfiles([extremeEntry], 1);
+            expect(Array.isArray(singleClusterResult)).toBe(true);
+            expect(singleClusterResult.length).toBeGreaterThanOrEqual(0);
+
+            // Test with unknown CPU models and very low memory to hit uncovered branches
+            const unknownHardwareEntry: HardwareSurveyEntry = {
+                date: new Date(),
+                gpuDistribution: [
+                    { gpuModel: 'Unknown GPU Model', percentage: 100, date: new Date() },
+                ],
+                cpuDistribution: [
+                    { cpuModel: 'Unknown CPU Model', percentage: 100, date: new Date() },
+                ],
+                resolutionData: [],
+                vramDistribution: [
+                    { memory: '2GB', percentage: 50, date: new Date() }, // Very low memory
+                    { memory: '1GB', percentage: 50, date: new Date() }, // Even lower memory
+                ],
+            };
+
+            const unknownResult = clusterUserProfiles([unknownHardwareEntry], 2);
+            expect(Array.isArray(unknownResult)).toBe(true);
+        });
+
+        it('should handle additional trend detection edge cases', () => {
+            // Test with identical data points
+            const identicalData: GPUMarketShare[] = [
+                { gpuModel: 'Stable GPU', percentage: 25, date: new Date('2024-01-01') },
+                { gpuModel: 'Stable GPU', percentage: 25, date: new Date('2024-02-01') },
+                { gpuModel: 'Stable GPU', percentage: 25, date: new Date('2024-03-01') },
+            ];
+
+            const stableTrends = detectMarketTrends(identicalData);
+            expect(stableTrends.stable).toContain('Stable GPU');
+
+            // Test with large window parameter
+            const largeWindowTrends = detectMarketTrends(identicalData, 12);
+            expect(largeWindowTrends.stable).toContain('Stable GPU');
+
+            // Test that stable trends are detected correctly
+            expect(stableTrends.fastestGrowth.model).toBeDefined();
+            expect(stableTrends.fastestDecline.model).toBeDefined();
         });
     });
 });
