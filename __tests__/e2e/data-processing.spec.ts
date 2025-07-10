@@ -1,26 +1,20 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Data Processing Integration', () => {
-    test('should have data processing foundation available', async ({ page }) => {
+test.describe('Phase 2 Analysis Engine Integration', () => {
+    test('should display Phase 2 completion status', async ({ page }) => {
         await page.goto('/');
         await page.waitForLoadState('networkidle');
 
-        // Verify the page indicates Phase 1 completion
-        const phaseIndicator = page.locator('text=Phase 1 (Data Foundation) Complete');
+        // Verify the page indicates Phase 2 completion
+        const phaseIndicator = page.locator('text=Phase 2 (Analysis Engine) Complete');
         await expect(phaseIndicator).toBeVisible();
 
-        // Check system status dashboard
-        const testsCount = page.locator('text=98');
-        await expect(testsCount).toBeVisible();
-
-        const gpuCount = page.locator('text=20+');
-        await expect(gpuCount).toBeVisible();
-
-        const coverage = page.locator('text=93%');
-        await expect(coverage).toBeVisible();
+        // Check that Phase 3 is coming next
+        const phaseMessage = page.locator('text=Interactive UI Coming in Phase 3');
+        await expect(phaseMessage).toBeVisible();
     });
 
-    test('should indicate data processing capabilities', async ({ page }) => {
+    test('should show analysis engine capabilities', async ({ page }) => {
         await page.goto('/');
 
         // Use role-based locators for headings (more specific and semantic)
@@ -33,15 +27,18 @@ test.describe('Data Processing Integration', () => {
         const marketIntelligence = page.getByRole('heading', { name: 'Market Intelligence' });
         await expect(marketIntelligence).toBeVisible();
 
-        // Verify feature descriptions (these are unique)
+        // Verify feature descriptions show analysis capabilities
         const trendDescription = page.locator('text=Track GPU market share evolution');
         await expect(trendDescription).toBeVisible();
+
+        const bottleneckDescription = page.locator('text=Identify performance bottlenecks');
+        await expect(bottleneckDescription).toBeVisible();
     });
 
-    test('should show upcoming features correctly', async ({ page }) => {
+    test('should show Phase 3 UI components as coming soon', async ({ page }) => {
         await page.goto('/');
 
-        // Check that Phase 2 features are marked as coming soon
+        // Check that Phase 3 UI features are marked as coming soon (disabled)
         const dashboardButton = page.locator('button:has-text("Hardware Analysis Dashboard")');
         await expect(dashboardButton).toBeVisible();
         await expect(dashboardButton).toBeDisabled();
@@ -55,32 +52,50 @@ test.describe('Data Processing Integration', () => {
         await expect(trendsButton).toBeDisabled();
     });
 
-    test('should have proper data foundation messaging', async ({ page }) => {
+    test('should have author information in footer', async ({ page }) => {
         await page.goto('/');
 
-        // Check for accurate phase messaging
-        const foundationMessage = page.locator('text=Data Foundation Layer');
-        await expect(foundationMessage).toBeVisible();
+        // Check for author footer that was added in Phase 2
+        const authorSection = page.locator('text=Built with ❤️ by');
+        await expect(authorSection).toBeVisible();
 
-        const testingMessage = page.locator('text=Comprehensive Testing');
-        await expect(testingMessage).toBeVisible();
+        // Check for GitHub and LinkedIn links
+        const githubLink = page.locator('a[href*="github.com"]');
+        await expect(githubLink).toBeVisible();
 
-        const cicdMessage = page.locator('text=CI/CD Pipeline');
-        await expect(cicdMessage).toBeVisible();
-
-        // Check phase indicator
-        const phaseMessage = page.locator('text=UI Components Coming in Phase 2');
-        await expect(phaseMessage).toBeVisible();
+        const linkedinLink = page.locator('a[href*="linkedin.com"]');
+        await expect(linkedinLink).toBeVisible();
     });
 
-    test('should display current date in status dashboard', async ({ page }) => {
+    test('should display Steam Hardware Analyzer title and description', async ({ page }) => {
         await page.goto('/');
 
-        // The current date should be displayed in the status dashboard
-        const statusSection = page.locator('text=System Status').locator('..').locator('..');
+        // Check main title
+        const title = page.getByRole('heading', { name: 'Steam Hardware Analyzer' });
+        await expect(title).toBeVisible();
 
-        // Should contain a date-like string
-        const statusText = await statusSection.textContent();
-        expect(statusText).toMatch(/\d/); // Should contain numbers (date)
+        // Check description
+        const description = page.locator(
+            'text=Analyze Steam Hardware Survey data to identify gaming hardware trends'
+        );
+        await expect(description).toBeVisible();
+    });
+
+    test('should have proper page structure and accessibility', async ({ page }) => {
+        await page.goto('/');
+
+        // Check page has proper title
+        await expect(page).toHaveTitle(/Steam Hardware Analyzer/);
+
+        // Check main navigation structure exists
+        const main = page.locator('main');
+        await expect(main).toBeVisible();
+
+        // Check that headings are structured properly
+        const h1 = page.locator('h1');
+        await expect(h1).toBeVisible();
+
+        const h2Elements = page.locator('h2');
+        await expect(h2Elements.first()).toBeVisible();
     });
 });

@@ -9,12 +9,12 @@ test.describe('API Endpoints', () => {
         expect(response.status()).toBe(200);
 
         const data = await response.json();
-        expect(data.message).toContain('Hardware API endpoint');
+        expect(data.message).toContain('Hardware distribution data');
         expect(data.status).toBe('available');
-        expect(data.phase).toBe('data-foundation');
-        expect(data.features).toBeDefined();
-        expect(data.features.gpu_database).toBe(true);
-        expect(data.features.data_processing).toBe(true);
+        expect(data.phase).toBe('analysis-engine');
+        expect(data.data).toBeDefined();
+        expect(data.data.survey_data).toBeDefined();
+        expect(data.data.total_entries).toBeGreaterThan(0);
     });
 
     test('should respond to trends API with proper JSON', async ({ request }) => {
@@ -25,11 +25,12 @@ test.describe('API Endpoints', () => {
         expect(response.status()).toBe(200);
 
         const data = await response.json();
-        expect(data.message).toContain('Trends API endpoint');
+        expect(data.message).toContain('GPU market trends analysis');
         expect(data.status).toBe('available');
-        expect(data.phase).toBe('data-foundation');
-        expect(data.capabilities).toBeDefined();
-        expect(data.capabilities.time_series_analysis).toBe(true);
+        expect(data.phase).toBe('analysis-engine');
+        expect(data.trends).toBeDefined();
+        expect(data.metadata).toBeDefined();
+        expect(data.metadata.data_points).toBeGreaterThan(0);
     });
 
     test('should handle non-existent API endpoints gracefully', async ({ request }) => {
