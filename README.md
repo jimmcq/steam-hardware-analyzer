@@ -89,6 +89,29 @@ yarn test:integration # Run integration tests only
 yarn test:e2e         # Run end-to-end tests
 ```
 
+### Git Hooks
+
+The project uses Husky to enforce code quality with automated git hooks:
+
+#### Pre-commit Hook
+
+Runs automatically before each commit:
+
+- **Lint-staged:** Applies ESLint fixes and Prettier formatting to changed files
+- **TypeScript type check:** Ensures type safety across the entire project
+- **Full test suite:** Runs all unit and integration tests (98 tests)
+- **Blocks commit:** Prevents commits if any check fails
+
+#### Pre-push Hook
+
+Runs automatically before pushing to remote:
+
+- **Integration tests:** Validates end-to-end functionality (21 tests)
+- **Production build:** Ensures the project builds successfully for deployment
+- **Blocks push:** Prevents pushing if tests fail or build breaks
+
+These hooks ensure that all code pushed to the repository passes the same quality checks as the CI/CD pipeline.
+
 ## Architecture
 
 ### Data Pipeline
