@@ -39,7 +39,7 @@ A Next.js 14 web application that analyzes Steam Hardware Survey data to identif
 
 ### Prerequisites
 
-- Node.js 18.x or later
+- Node.js 20.17 or later (required for lint-staged compatibility)
 - Yarn package manager
 
 ### Installation
