@@ -226,7 +226,7 @@ describe('Additional Coverage Tests', () => {
         it('should handle very short timeframes', () => {
             const shortData: GPUMarketShare[] = [
                 { gpuModel: 'RTX 4070', percentage: 10, date: new Date('2024-01-01') },
-                { gpuModel: 'RTX 4070', percentage: 10.5, date: new Date('2024-01-02') },
+                { gpuModel: 'RTX 4070', percentage: 10.5, date: new Date('2024-02-01') },
             ];
 
             const trends = detectMarketTrends(shortData);
