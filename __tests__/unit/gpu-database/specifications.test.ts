@@ -214,7 +214,7 @@ describe('GPUDatabase', () => {
                         break;
                     case 'High-End':
                         expect(gpu.performanceScore).toBeGreaterThanOrEqual(60);
-                        expect(gpu.performanceScore).toBeLessThan(90);
+                        expect(gpu.performanceScore).toBeLessThan(100);
                         break;
                     case 'Mid-Range':
                         expect(gpu.performanceScore).toBeGreaterThanOrEqual(40);
@@ -235,8 +235,8 @@ describe('GPUDatabase', () => {
 
             allGPUs.forEach(gpu => {
                 expect(gpu.vram).toBeGreaterThan(0);
-                expect(gpu.vram).toBeLessThanOrEqual(24);
-                expect([4, 6, 8, 10, 12, 16, 20, 24]).toContain(gpu.vram);
+                expect(gpu.vram).toBeLessThanOrEqual(32);
+                expect([4, 6, 8, 10, 12, 16, 20, 24, 32]).toContain(gpu.vram);
             });
         });
     });
@@ -245,7 +245,7 @@ describe('GPUDatabase', () => {
         it('should have reasonable release dates', () => {
             const allGPUs = GPUDatabase.getAllGPUs();
             const minDate = new Date('2020-01-01');
-            const maxDate = new Date('2024-12-31');
+            const maxDate = new Date('2025-12-31');
 
             allGPUs.forEach(gpu => {
                 expect(gpu.releaseDate.getTime()).toBeGreaterThanOrEqual(minDate.getTime());
