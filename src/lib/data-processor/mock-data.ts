@@ -189,6 +189,25 @@ export class MockDataGenerator {
     }
 
     /**
+     * Generate hardware survey data for a specified number of months
+     */
+    static generateHardwareSurveyData(months: number): HardwareSurveyEntry[] {
+        const entries: HardwareSurveyEntry[] = [];
+        const currentDate = new Date();
+        currentDate.setMonth(currentDate.getMonth() - months);
+
+        for (let i = 0; i < months; i++) {
+            const entryDate = new Date(currentDate);
+            entryDate.setMonth(entryDate.getMonth() + i);
+
+            const surveyData = this.generateSteamSurveyData(entryDate);
+            entries.push(this.convertToHardwareSurveyEntry(surveyData));
+        }
+
+        return entries;
+    }
+
+    /**
      * Generate multiple survey entries over time
      */
     static generateMultipleSurveyEntries(

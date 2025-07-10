@@ -144,34 +144,34 @@ export default function Home() {
 
             {/* Footer */}
             <footer className="bg-gray-100 dark:bg-gray-800 py-8 mt-16">
-                <div className="container mx-auto px-4">
-                    <div className="text-center">
-                        <p className="mb-4 text-sm text-slate-400">
-                            Built with ❤️ by{/* */}{' '}
-                            <span className="font-semibold text-slate-300">Jim McQuillan</span>
-                        </p>
-                        <div className="flex justify-center space-x-6 text-sm">
-                            <a
-                                href="https://github.com/jimmcq"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-slate-400 transition-colors duration-200 hover:text-white"
-                            >
-                                GitHub
-                            </a>
-                            <a
-                                href="https://linkedin.com/in/jimmcquillan/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-slate-400 transition-colors duration-200 hover:text-white"
-                            >
-                                LinkedIn
-                            </a>
-                        </div>
-                        <p className="mt-4 text-xs text-slate-500">
-                            © 2025 Jim McQuillan. Open source under MIT License.
-                        </p>
+                <div className="container mx-auto px-4 text-center">
+                    <p className="text-gray-600 dark:text-gray-400 mb-2">
+                        Built with ❤️ by{' '}
+                        <span className="font-semibold text-gray-800 dark:text-gray-200">
+                            Jim McQuillan
+                        </span>
+                    </p>
+                    <div className="flex justify-center space-x-6 text-sm mb-2">
+                        <a
+                            href="https://github.com/jimmcq"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                        >
+                            GitHub
+                        </a>
+                        <a
+                            href="https://linkedin.com/in/jimmcquillan/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                        >
+                            LinkedIn
+                        </a>
                     </div>
+                    <p className="text-sm text-gray-500 dark:text-gray-500">
+                        © 2025 Jim McQuillan. Open source under MIT License.
+                    </p>
                 </div>
             </footer>
         </div>
